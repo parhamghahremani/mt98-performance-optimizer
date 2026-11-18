@@ -47,7 +47,7 @@ test.describe('MT98 Performance Optimizer', () => {
     expect(errors).toHaveLength(0);
   });
 
-  test('Permanent scroll-effects disabling applied at load (v2.1.1)', async ({ page }) => {
+  test('Scroll-time optimization: mt98-scrolling class toggles during scroll (v2.0.x)', async ({ page }) => {
     const scriptContent = await readScriptFile();
     const response = await gotoWithScript(page, 'https://mt98.ir/', scriptContent);
 
@@ -58,19 +58,18 @@ test.describe('MT98 Performance Optimizer', () => {
 
     await page.waitForTimeout(3000);
 
-    // v2.1.1: When disableAllScrollEffects is true (default), the script adds
-    // mt98-disable-scroll-effects class immediately at load, NOT mt98-scrolling during scroll.
-    // This eliminates flash completely because effects are permanently disabled.
+    // v2.0.x: Uses mt98-scrolling class toggle during scroll, NOT permanent disable
+    // Initially should not have the class
+    const initiallyHasClass = await page.evaluate(() => {
+      return document.documentElement.classList.contains('mt98-scrolling');
+    });
+    expect(initiallyHasClass).toBeFalsy();
+
+    // Verify mt98-disable-scroll-effects class is NOT used (v2.1.x only)
     const hasDisableClass = await page.evaluate(() => {
       return document.documentElement.classList.contains('mt98-disable-scroll-effects');
     });
-    expect(hasDisableClass).toBeTruthy();
-
-    // Verify mt98-scrolling class is NOT used (legacy mode only)
-    const hasScrollingClass = await page.evaluate(() => {
-      return document.documentElement.classList.contains('mt98-scrolling');
-    });
-    expect(hasScrollingClass).toBeFalsy();
+    expect(hasDisableClass).toBeFalsy();
   });
 
   test('Images get decoding=async', async ({ page }) => {
