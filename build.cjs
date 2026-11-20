@@ -1,14 +1,17 @@
 /**
  * Build script for MT98 Performance Optimizer
- * Creates versioned releases in versions/ folder
+ * Creates versioned releases in versions/ folder and updates dist/
  */
 
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 const SRC_FILE = "src/mt98-performance-optimizer.user.js";
 const VERSIONS_DIR = "versions";
 const DIST_DIR = "dist";
+const DIST_FILE = "mt98-performance-optimizer.user.js";
+const REPO = "mt98-performance-optimizer";
+const OWNER = "parhamghahremani";
 
 function readVersion() {
     const content = fs.readFileSync(SRC_FILE, "utf-8");
@@ -24,7 +27,6 @@ function ensureDir(dir) {
 
 function build() {
     const version = readVersion();
-    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
     ensureDir(VERSIONS_DIR);
     ensureDir(DIST_DIR);
@@ -32,28 +34,25 @@ function build() {
     const content = fs.readFileSync(SRC_FILE, "utf-8");
 
     // Create versioned release
-    const versionedFile = path.join(VERSIONS_DIR, `mt98-performance-optimizer-v${version}.user.js`);
+    const versionedFile = path.join(VERSIONS_DIR, `v${version}.user.js`);
     fs.writeFileSync(versionedFile, content);
     console.log(`Created versioned release: ${versionedFile}`);
 
-    // Create dist file (latest)
-    const distFile = path.join(DIST_DIR, "mt98-performance-optimizer.user.js");
-    fs.writeFileSync(distFile, content);
-    console.log(`Created dist file: ${distFile}`);
-
-    // Update download/update URLs in dist file to point to versioned release
+    // Create dist file (latest) with stable update URLs pointing to dist/
+    const distFile = path.join(DIST_DIR, DIST_FILE);
     let distContent = content
         .replace(
             /@downloadURL\s+.*/,
-            `@downloadURL  https://github.com/parhamghahremani/userscripts/raw/main/mt98-performance-optimizer/versions/mt98-performance-optimizer-v${version}.user.js`
+            `@downloadURL  https://raw.githubusercontent.com/${OWNER}/${REPO}/main/dist/${DIST_FILE}`
         )
         .replace(
             /@updateURL\s+.*/,
-            `@updateURL    https://github.com/parhamghahremani/userscripts/raw/main/mt98-performance-optimizer/versions/mt98-performance-optimizer-v${version}.user.js`
+            `@updateURL    https://raw.githubusercontent.com/${OWNER}/${REPO}/main/dist/${DIST_FILE}`
         );
 
     fs.writeFileSync(distFile, distContent);
-    console.log(`Updated dist file with versioned URLs`);
+    console.log(`Created dist file: ${distFile}`);
+    console.log(`Updated dist file with stable URLs`);
 
     console.log(`\nBuild complete! Version: ${version}`);
     console.log(`Files:`);

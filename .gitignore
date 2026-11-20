@@ -2,8 +2,9 @@
 node_modules/
 
 # Build outputs
-dist/
 versions/
+
+# dist/ is tracked for Tampermonkey auto-update compatibility
 
 # Test outputs
 test-results/
