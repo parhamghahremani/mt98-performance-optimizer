@@ -3,7 +3,7 @@
 **Project**: `mt98-performance-optimizer`  
 **Canonical Name**: `mt98-performance-optimizer`  
 **Userscript File**: `src/mt98-performance-optimizer.user.js` (built to `dist/` and `versions/`)  
-**GitHub Repo**: `parhamghahremani/mt98-performance-optimizer` (Private)  
+**GitHub Repo**: `parhamghahremani/mt98-performance-optimizer` (Public)  
 **Current Version**: 2.0.2  
 **Target**: Firefox Desktop + Firefox Android  
 **Site**: `https://mt98.ir/*`, `https://www.mt98.ir/*`
@@ -181,7 +181,7 @@ Pre-change snapshot before each logical batch:
 1. **Never modify sibling projects** — Only touch `mt98-performance-optimizer/`
 2. **Source of truth** = `src/mt98-performance-optimizer.user.js`
 3. **Version consistency**: `@version` in source = `package.json` = Git tag = CHANGELOG
-4. **Private GitHub repo** — Never make public without explicit permission
+4. **Public GitHub repo** — Public for Tampermonkey auto-update compatibility
 5. **Sync only after approval** — Push after manual test + user go-ahead
 6. **Persian communication** — All user messages in Persian; code/docs in English
 7. **No automated test suites** — Playwright for research only; user tests manually
@@ -192,7 +192,7 @@ Pre-change snapshot before each logical batch:
 
 - **Version**: 2.0.2 (stable baseline)
 - **Git**: Initialized, remote `origin` configured
-- **GitHub**: Private repo created at `parhamghahremani/mt98-performance-optimizer`
+- **GitHub**: Public repo at `parhamghahremani/mt98-performance-optimizer`
 - **Documentation**: Being created in this session
 - **Backups**: Directory structure being set up
 - **Next**: Initial commit, documentation completion, backup verification
